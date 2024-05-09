@@ -30,8 +30,8 @@ jobs:
           ignore-unfixed: true
           format: 'table'
           output: 'trivy-results.txt'
-          severity: 'CRITICAL'
-          exit-code: '0' 
+          severity: 'HIGH'
+          exit-code: '1' 
 
       - name: Check for vulnerabilities
         id: check_vulnerabilities
@@ -45,13 +45,19 @@ jobs:
           fi
 
       - name: Slack Notification
-        if: steps.check_vulnerabilities.outputs.vulnerabilities_found == 'true'
+        if: failure()
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CHANNEL: test-submission
+          SLACK_COLOR: ${{ job.status }}
+          ENABLE_ESCAPES: true
+          SLACK_TITLE: Scan failed -XU YANG
+          SLACK_MESSAGE: 'Failed trivy scan, see uploaded report'
+
 
       - name: Upload Trivy report to Slack
-        if: steps.check_vulnerabilities.outputs.vulnerabilities_found == 'true'
+        if: failure()
         uses: MeilCli/slack-upload-file@v4
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
@@ -59,7 +65,7 @@ jobs:
           content: 'file content'
           file_type: 'text'
           file_name: 'trivy-results.txt'
-          title: 'title'
+          title: 'Fail'
           initial_comment: 'post by slack-upload-file'
 
       - name: Set up QEMU
