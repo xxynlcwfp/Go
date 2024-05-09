@@ -62,11 +62,11 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL }}
-          content: 'file content'
+          file_path: 'trivy-results.txt'
           file_type: 'text'
           file_name: 'trivy-results.txt'
           title: 'Fail'
-          initial_comment: 'post by slack-upload-file'
+          initial_comment: 'Scan report by XU YANG'
 
       - name: Set up QEMU
         if: success()  # Only execute if no vulnerabilities found
