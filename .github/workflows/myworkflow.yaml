@@ -29,18 +29,18 @@ jobs:
           scan-type: 'fs'
           ignore-unfixed: true
           format: 'table'
-          output: 'trivy-results.sarif'
+          output: 'trivy-results.txt'
           severity: 'CRITICAL'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'trivy-results.sarif'  
+          sarif_file: 'trivy-results.txt'  
 
       - name: Check for vulnerabilities
         id: check_vulnerabilities
         run: |
-          if grep -q CRITICAL trivy-results.sarif; then
+          if grep -q CRITICAL trivy-results.txt; then
             echo "Vulnerabilities found."
             echo "::set-output name=vulnerabilities_found::true"
           else
@@ -59,7 +59,7 @@ jobs:
         uses: ByConnor/action-slack-upload-file@v1
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          file: ./trivy-results.sarif
+          file: ./trivy-results.txt
           channels: ${{ secrets.SLACK_CHANNEL }}
 
       - name: Set up QEMU
