@@ -89,6 +89,7 @@ jobs:
         uses: sigstore/cosign-installer@v3.5.0
 
       - name: Sign image with a key
+        if: success()
         run: |
           cosign sign --yes --key env://COSIGN_PRIVATE_KEY xxynlcwfp/go-fortune:${{ github.sha }}
         env:
@@ -98,6 +99,9 @@ jobs:
         if: success()  # Only execute if no vulnerabilities found
         uses: rtCamp/action-slack-notify@v2
         env:
+          SLACK_CHANNEL: test-submission
+          SLACK_COLOR: ${{ job.status }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        with:
-         args: "Name: ${{ secrets.NAME }} | Matriculation Number: ${{ secrets.MATRICULATION_NUMBER }} | Email: ${{ secrets.EMAIL }} | Repository: ${{ github.repository }} | Docker Hub URL: https://hub.docker.com/repository/docker/xxynlcwfp/go-fortune/general"
+          SLACK_TITLE: Image build and signed
+          ENABLE_ESCAPES: true
+          SLACK_MESSAGE: '*Name:* XU YANG\n*Metriculation:* A0291821E\n*Email:* xxxyoo1916@gmail.com\n*Git:* https://github.com/xxynlcwfp/Go.git\n*Image:* https://hub.docker.com/repository/docker/xxynlcwfp/go-fortune/general'
