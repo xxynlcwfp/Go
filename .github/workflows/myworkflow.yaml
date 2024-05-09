@@ -92,11 +92,12 @@ jobs:
           for tag in ${TAGS}; do
             images+="${tag}"
           done
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY ${images}
-          cosign verify --key cosign.pub ${images}
+          C:\cosign sign --yes --key env://COSIGN_PRIVATE_KEY ${images}
+          C:\cosign verify --key cosign.pub ${images}
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
           TAGS: 'xxynlcwfp/go-fortune:${{ github.sha }}'
+
 
       - name: Slack Notification
         if: success()  # Only execute if no vulnerabilities found
