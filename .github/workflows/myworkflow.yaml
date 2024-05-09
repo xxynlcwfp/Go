@@ -89,6 +89,7 @@ jobs:
         uses: sigstore/cosign-installer@v3.5.0
 
       - name: Sign image with a key
+        if: success()
         run: |
           cosign sign --yes --key env://COSIGN_PRIVATE_KEY ${xxynlcwfp/go-fortune:${{ github.sha }}}
         env:
