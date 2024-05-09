@@ -30,8 +30,8 @@ jobs:
           ignore-unfixed: true
           format: 'table'
           output: 'trivy-results.txt'
-          severity: 'CRITICAL'
-          exit-code: '0' 
+          severity: 'HIGH'
+          exit-code: '1' 
 
       - name: Check for vulnerabilities
         id: check_vulnerabilities
