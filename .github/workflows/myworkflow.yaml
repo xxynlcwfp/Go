@@ -56,11 +56,15 @@ jobs:
 
       - name: Upload Trivy report to Slack
         if: steps.check_vulnerabilities.outputs.vulnerabilities_found == 'true'
-        uses: ByConnor/action-slack-upload-file@v1
+        uses: MeilCli/slack-upload-file@v4
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          file: ./trivy-results.txt
-          channels: ${{ secrets.SLACK_CHANNEL }}
+          channel_id: ${{ secrets.SLACK_CHANNEL }}
+          content: 'file content'
+          file_type: 'text'
+          file_name: 'trivy-results.txt'
+          title: 'title'
+          initial_comment: 'post by slack-upload-file'
 
       - name: Set up QEMU
         if: success()  # Only execute if no vulnerabilities found
