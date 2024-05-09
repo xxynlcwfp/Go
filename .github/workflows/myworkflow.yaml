@@ -86,8 +86,9 @@ jobs:
           tags: xxynlcwfp/go-fortune:${{ github.sha }}
 
       - name: Sign image with a key
+        if: success()
         run: |
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY ${{ secrets.DOCKERHUB_USERNAME }}/go-fortune:${{ github.sha }}
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY ${${{ secrets.DOCKERHUB_USERNAME }}/go-fortune:${{ github.sha }}}
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
